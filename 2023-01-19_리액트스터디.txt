@@ -1,0 +1,25 @@
+2023-01-19
+리액트 페어 스터디
+
+
+1. CSR 과 SSR 차이점과 기본 구조 & 원리 이해
+   (주람님이 보내주신 이미지 추가)
+ - 
+ - 
+
+2. todolist > src > pages > Home > index.js 에서
+구조분해할당 관련
+
+function HomePage() {
+    let form = 'login';
+
+    const onFormChnage = (e) => {   //e -> 이벤트객체.. 
+    const { innerText } = e.target; //구조분해할당 (눌리는 이벤트 객체를 받아서...)
+        form = innerText.toLowerCase();
+        console.log(form);
+    };
+
+3. JSX 구문 관련
+ - onClick 과 같이 대문자화 해야하는 부분이 HTML과 차이가 있음
+
+4. 단위를 얼만큼 쪼개냐
