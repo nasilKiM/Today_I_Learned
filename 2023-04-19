@@ -1,3 +1,41 @@
-Naver Map API 연결관련 스터디
+2023-04-19
 
+- Naver Map API 연결관련 스터디
 - 참고사이트 : https://zeakd.github.io/react-naver-maps/
+
+2023-04-20
+
+1. 용어정리
+
+- 줌/레벨 (지도가 확대되는 정도 ex. 250m)
+- 오버레이 (지리적 정보를 시각화를 위해 지도위에 추가할 수 있는 대체)
+- 마커 (지도에 올라가는 핀 모양의 이미지 표시)
+- 인포윈도우 (지도 위에 지정된 정보창 제공 -- 주로 txt 데이터)
+
+2.  지도 API의 주요기능
+
+- 지도생성
+- 지도의 옵션과 유형변경
+- 지도 위치 설정 및 이동
+
+       function setCenter() {
+       // 이동할 위도 경도 위치 생성
+       let moveLocation = new kakao.maps.LatLng(33.452613, 126.570888);
+
+           // 지도 중심이동
+           map.setCenter(moveLocation);
+
+       }
+
+       function pinTo() {
+       // 이동할 위도 경도 위치를 생성
+       let moveLocation = new kakao.maps.LatLng(33.450580, 126.5749942);
+
+           //지도 중심을 부드럽게 이동
+           // 이동할 거리가 보여지는 지도화면보다 클때는 부드러운 효과x
+           map.pinTo(moveLocation);
+
+       }
+
+- 마커, 인포윈도우 등 오버레이 띄우기
+- 이벤트 등록
