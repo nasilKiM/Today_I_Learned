@@ -39,3 +39,46 @@
 
 - 마커, 인포윈도우 등 오버레이 띄우기
 - 이벤트 등록
+
+2023-04-21
+
+1. 지도 API 활용 사례
+
+ [공식문서내용]
+    실제 지도그리는 js api 불러오기
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey={API_KEY}"></script>
+
+ [public/index.html]
+    <body>
+        <div id="root"></div>
+
+        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey={API_KEY}&libraries=services"></script>
+
+    </body>
+
+2. map.js
+
+import React, {useEffect} from "react";
+const {kakao} = window;
+
+export default function Map(){
+    
+    useEffect(()=>{
+        let mapContainer = document.getElementById('map') // 지도표시할div
+
+        // 지도 옵션 설정
+        let mapOption = {
+            center: new kakao.maps.LatLng(33.450701, 126.570667), //지도 중심좌표
+            level : 3 // 지도 확대 레벨
+        };
+
+        // 지도 표시할 div + 지도옵션으로 지도생성
+        let map = new kakao.maps.Map(mapContainer, mapOption);
+}, [])
+
+return(
+    <div id="map" style={{width:"80%", height:"80%",}}></div>
+)
+
+}
+
