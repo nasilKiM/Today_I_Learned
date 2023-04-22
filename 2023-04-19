@@ -82,3 +82,36 @@ return(
 
 }
 
+2023-04-22
+
+1. info window 에 event 등록
+
+// 마커클릭 시, 마커위 infWindow 생성
+let infoWindowContent = '<div style="padding:10px">Hello World!</div>', infoWindowRemovable = true;
+
+// 인포윈도우 생성
+let infoWindow = new kakao.maps.infoWindow({
+    content: infoWindowContent,
+    removable: infoWindowRemovable,
+});
+
+// 클릭이벤트 등록
+kakao.maps.event.addEventListener(marker, 'click', function() {
+    // 마커 위 infoWindow 표시
+    infoWindow.open(map, marker);
+});
+
+2. 선언된 이벤트 핸들러
+ let infoWindowContent = `
+    <div>카페명: ${data.cafeName}</div>
+    <div>영업시간: ${data.time}</div>
+    <div>시급: ${data.hourlywage}</div>
+    <button onclick="${eventHandler}">알바지원하기</button>
+ `
+ let infoWindowClick = new kakao.maps.infoWindow({
+    content: infoWindowContent,
+    removable: true,
+});
+
+<개선필요사항>
+--> 해당하는 위치에 뿌려지는게 아니라, 전체리스트가 나온다. 
