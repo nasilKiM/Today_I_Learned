@@ -1,0 +1,36 @@
+TIL
+
+1. React-hook-from
+ - 참고 페이지 : https://www.npmjs.com/package/react-hook-form
+
+ - 실제 프로젝트에 적용: zoop zoop 마켓
+ - 의문점(아래)
+ - 코드 : useRef 사용이 적절한지에 대한 의문
+
+    (현재)
+    <input
+    {...register('confirmPW', {
+    required: true,
+    validate: value => {
+    if (watch('password') !== value) {
+    return '비밀번호를 다시 확인해 주세요';
+    }
+    },
+    })}
+    placeholder="PW check"
+    type="password"
+    />
+
+    (변경고려 부분)
+    const password = useRef();
+    ...
+    <label>Password Confirm</label>
+    <input
+    type="password"
+    name="password_confirm"
+    ref={register({
+    required: true,
+    validate: (value) =>
+    value === password.current
+    })}
+    />
