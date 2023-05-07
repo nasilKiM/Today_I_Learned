@@ -1,0 +1,78 @@
+TIL
+
+2023-05-04
+
+1. React-hook-from
+ - 참고 페이지 : https://www.npmjs.com/package/react-hook-form
+
+ - 실제 프로젝트에 적용: zoop zoop 마켓
+ - 의문점(아래)
+ - 코드 : useRef 사용이 적절한지에 대한 의문
+
+    (현재)
+    <input
+    {...register('confirmPW', {
+    required: true,
+    validate: value => {
+    if (watch('password') !== value) {
+    return '비밀번호를 다시 확인해 주세요';
+    }
+    },
+    })}
+    placeholder="PW check"
+    type="password"
+    />
+
+    (변경고려 부분)
+    const password = useRef();
+    ...
+    <label>Password Confirm</label>
+    <input
+    type="password"
+    name="password_confirm"
+    ref={register({
+    required: true,
+    validate: (value) =>
+    value === password.current
+    })}
+    />
+
+
+2023-05-07
+2. 물품등록 관련
+ (1) 등록실패(signUp, login)과 똑같이 하니, 백엔드에서 계속 error 메세지...
+  -> 해결방법 : api.docs 에서 form 형태로 데이터를 보내는 예시를 보고 FormData 형태로 변형
+
+   	const onSubmit = data => {
+		try {
+			const formData = new FormData();
+			formData.append('title', data.title);
+			formData.append('price', Number(data.price));
+			formData.append('category', Number(data.price) === 0 ? 1 : 0);
+			formData.append('description', data.content);
+			formData.append('region', searchResult);
+			formData.append('tag', [data.tag]);
+			formData.append('images', data.mainImg);
+			Axios.post('/api/product', formData);
+			alert('물품등록이 완료되었습니다.');
+		} catch (err) {
+			return console.log(err);
+		}
+	};
+
+  (2) 이미지 업로드 관련
+
+   (1) 문제인식 : useRef() 와 react-hook-form 의 register를 함께쓰면 오류발생
+   (2) 문제해결 : 아래 코드 확인
+    <input
+				id="mainImg"
+				type="file"
+				accept="image/*"
+				multiple
+				style={{ display: 'none' }}
+				{...register('mainImg')}
+				onChange={e => {
+					register('mainImg').onChange(e);
+					onUpload(e);
+				}}
+			/>
