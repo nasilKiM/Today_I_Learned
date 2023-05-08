@@ -76,3 +76,50 @@ TIL
 					onUpload(e);
 				}}
 			/>
+
+
+2023-05-08
+
+1. **에러해결 ?!**
+    1. 문제점 : 물품등록 시, 이미지가 제대로 전달되지않음 (강사님 답변: 이미지 전송 방식의 문제)
+    2. 문제해결접근 : **formData** 객체로 데이터를 보낼때 방식을 검색
+    3. 해결코드
+        
+        ```
+        [...data.mainImg].forEach(element => {
+        				formData.append('images', element);
+        			});
+        			// 참고 : https://pobsiz.tistory.com/12 (3번)
+        			// 같은 키값에 코드를 여러번 실행시켜야함
+        			Axios.post('/api/product', formData, {
+        				headers: { 'Content-Type': 'multipart/form-data' },
+        			});
+        ```
+        
+2. 태그 추가 로직 수정
+    1. (이전) 태그를 입력하는 input 창과, 태그 관련 오류를 검사하는 input을 2개를 둠.
+    2. (개선) 오류검사를 따로진행
+        1. react-hook-form 에 있는 setError, clearErrors 기능을 활용
+        2. onSubmit 함수에 아래 로직을 추가
+            
+            ```
+            if (tags.length === 0) {
+            			//리액트 훅폼으로 에러메세지 셋팅
+            			setError(
+            				'tag', //에러 이름. 기존에 있는 것과 겹칠시 그쪽으로 에러 들어감
+            				{ message: '1개이상 꼭 입력해주세요.' }, //errors에 넣을 에러 메시지
+            				{ shouldFocus: true }, //에러 발생시 해당 구간에 포커스하게 하는 설정
+            			);
+            			return;
+            		} else setValue('', ''); //값이 유효하면 set!
+            ```
+            
+        3. 그리고 엔터키를 눌러 태그를 추가할때마다 에러초기화
+            
+            ```
+            const handleKeyDown = e => {
+            		if (e.keyCode === 13) {
+            			clearErrors('tag'); // 에러초기화
+            ```
+            
+3. 카드 컴포넌트에 데이터 담아서 뿌리기(메인)
