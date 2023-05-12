@@ -123,3 +123,73 @@ TIL
             ```
             
 3. 카드 컴포넌트에 데이터 담아서 뿌리기(메인)
+
+
+
+2023-05-09
+
+
+1. **페어1(현서,영승,선영) 이 검토한 코드 리뷰 및 검토항목들 논의**
+    1. privateRoute 설정 
+       → 로그인 후 접속할 수 있는 페이지에서 (랜딩,로그인,회원가입) 페이지로 돌아갈때 사용자 이해를 위해 alert 메세지를 띄워주는 방향으로 수정 
+    2. 수정한 코드 리뷰(OK) 
+    3. react-hook-form 사용 시, watch 로직 수정(데이터 랜더링 이슈)
+    4. 회원가입 및 로그인 시, 최종 확인 버튼 disabled 처리관련 
+
+2. **카드컴포넌트에 데이터 불러오기 (preview.js 파일)**
+    1. main 페이지에서 props 로 product 넘겨주기 
+       → 상세페이지 넘어갈때 문제가 있어서 수정 필요 !        
+    2. 태그 map 돌리기 남았음… (카드컴포넌트 수정하면서 적용예정)
+
+3. **이미지 미리보기 관련 오류 해결**
+    1. 문제내용 : 메인이미지를 제외하고 subImg 에는 미리보기 기능을 하지않음
+    2. 이전코드
+        
+        ```jsx
+        const onUpload = e => {
+        		const fileArr = e.target.files;
+        		let fileURLs = [];
+        		let filesLength = fileArr.length > 5 ? 5 : fileArr.length;
+        
+        		for (let i = 0; i < filesLength; i++) {
+        			const reader = new FileReader();
+        			reader.readAsDataURL(fileArr[i]);
+        			reader.onload = () => {
+        				fileURLs[i] = reader.result;
+        				setImgSrc(fileURLs);
+        			};
+        		}
+        	};
+        ```
+        
+    3. 원인 : 
+        - **`reader.onload`** 이벤트가 비동기적으로 발생하기 때문에, 이미지 URL이 **`fileURLs`** 배열에 순서대로 저장되지 않고. 이미지가 뒤늦게 미리보기에 나타나는 원인이 됨!!
+        - 해결하기 위해서는, **`Promise`** 객체를 사용하여 **`onload`** 이벤트를 동기적으로 처리할 필요가 있음.
+    
+    4. 해결코드
+        
+        ```
+        const onUpload = async e => {
+        		const fileArr = e.target.files;
+        		const fileURLs = [];
+        
+        		for (let i = 0; i < fileArr.length && i < 5; i++) {
+        			const file = fileArr[i];
+        			const fileURL = await readFileAsync(file); // Promise로 파일을 읽음
+        			fileURLs.push(fileURL);
+        		}
+        		setImgSrc(fileURLs);
+        	};
+        
+        	const readFileAsync = file => {
+        		return new Promise((resolve, reject) => {
+        			const reader = new FileReader();
+        			reader.onload = () => resolve(reader.result);
+        			reader.onerror = reject;
+        			reader.readAsDataURL(file);
+        		});
+        	};
+        ```
+        
+    5. 주석
+        - **`readFileAsync`** 함수를 추가하여, **`FileReader`** 객체를 사용하여 파일을 읽어 **`Promise`** 객체를 반환. **`onUpload`** 함수에서는 **`await`** 키워드를 사용하여 이 함수가 모두 완료될 때까지 기다렸다가 **`setImgSrc`** 함수를 호출!!
