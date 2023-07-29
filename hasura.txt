@@ -1,0 +1,22 @@
+Hasura와 GraphQL 소개 및 사용법
+
+공식홈페이지 : https://hasura.io/docs/latest/index/
+
+1. Hasura란
+   : 데이터베이스 및 마이크로 서비스에 연결 한 후 자동으로 GraphQL API 백엔드를 빌드 할 수있는 오픈 엔진
+2. Hasura를 쓰는 이유
+    - 기존 RESTFUL API의 아쉬운점
+    : 프론트엔드에서 필요로 하는 정말 간단한 데이터베이스 CRUD라도 백엔드가 API로 만들어 주기까지 대기해야 함.
+    : 추가 데이터가 발생하거나, 수정이 필요한 경우에도 백엔드를 기다려야 하는 수동적인 단점 또한 존재
+    - GraphQL의 역할
+    : 명령어를 통해 프론트엔드에서 주도적으로 원하는 정보를 가져다 쓸 수 있게 만들어줌
+    : 하지만 여전히 백엔드에서 기본적인 mutation과 query로 CRUD를 만들어 줘야 한다는 단점이 존재
+    =>> **그것을 한번에 해결해 주는것이 HASURA**
+
+3. Dock를 설치하자
+ 1. 
+
+
+출처
+https://velog.io/@hwaya2828/Hasura
+https://taejoone.jeju.onl/posts/2023-02-09-hasura-postgres-setup/#2-docker-%EC%84%A4%EC%B9%98
